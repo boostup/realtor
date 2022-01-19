@@ -19,10 +19,10 @@ import { filterData, getFilterValues } from "../utils/filterData";
 const SearchFilters = () => {
   const [filters, setFilters] = useState(filterData);
   const router = useRouter();
+  const { query } = router;
 
   const searchProperties = (filterValue) => {
     const path = router.pathname;
-    const { query } = router;
 
     const values = getFilterValues(filterValue);
 
@@ -46,6 +46,7 @@ const SearchFilters = () => {
             onChange={(e) =>
               searchProperties({ [filter.queryName]: e.target.value })
             }
+            value={query[filter.queryName]}
           >
             {filter?.items?.map((item) => (
               <option value={item.value} key={item.value}>
