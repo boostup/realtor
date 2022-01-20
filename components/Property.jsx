@@ -36,7 +36,7 @@ const Property = ({
           src={coverPhoto ? coverPhoto.url : DefaultImage}
           width={400}
           height={260}
-          alt="house"
+          alt="property"
         />
       </Box>
       <Box w={"full"}>
@@ -46,10 +46,12 @@ const Property = ({
           justifyContent={"space-between"}
         >
           <Flex alignItems={"center"}>
-            <Box paddingRight={3} color={"green.400"}>
-              {isVerified && <GoVerified />}
-            </Box>
-            <Text fontSize={"lg"}>
+            {isVerified && (
+              <Box paddingRight={3} color={"green.400"}>
+                <GoVerified />
+              </Box>
+            )}
+            <Text fontSize={"lg"} fontWeight={"bold"}>
               AED {millify(price)}
               {rentFrequency && `/${rentFrequency}`}
             </Text>
@@ -65,7 +67,10 @@ const Property = ({
           w={"250px"}
           color={"blue.400"}
         >
-          {rooms} <FaBed /> | {baths} <FaBath /> | {millify(area)} sqft
+          {rooms} <FaBed /> | {baths} <FaBath /> |
+          <span>
+            {millify(area)} m<sup>2</sup>
+          </span>
           <BsGridFill />
         </Flex>
         <Text fontSize={"lg"}>
