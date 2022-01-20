@@ -12,7 +12,8 @@ import { fetchApi, baseUrl } from "../utils/fetchApi";
 
 const Search = ({ properties }) => {
   const [searchFilters, setSearchFilters] = useState(false);
-  const router = useRouter();
+  const { query } = useRouter();
+  const purpose = query.purpose?.replace("-", " ");
 
   return (
     <Box>
@@ -33,7 +34,7 @@ const Search = ({ properties }) => {
       </Flex>
       {searchFilters && <SearchFilters />}
       <Text fontSize={"2xl"} p={4} fontWeight={"bold"}>
-        Properties {router.query.purpose}
+        Properties {purpose}
       </Text>
       <Flex flexWrap={"wrap"} justifyContent={"center"}>
         {properties.map((property) => (
@@ -61,8 +62,6 @@ const Search = ({ properties }) => {
 export default Search;
 
 export async function getServerSideProps({ query }) {
-  console.log(query);
-
   const purpose = query.purpose || "for-rent";
   const rentFrequency = query.rentFrequency || "yearly";
   const priceMin = query.priceMin || "0";
@@ -70,17 +69,12 @@ export async function getServerSideProps({ query }) {
   const roomsMin = query.roomsMin || "0";
   const bathsMin = query.bathsMin || "0";
   const sort = query.sort || "price-desc";
-  const areaMax = query.areaMax || "35000";
+  const areaMin = query.areaMin || "100";
   const locationExternalIDs = query.locationExternalIDs || "5002";
   const categoryExternalID = query.categoryExternalID || "4";
 
-  console.log(
-    "request",
-    `|locationExternalIDs=${locationExternalIDs} | purpose=${purpose}| categoryExternalID=${categoryExternalID} | rentFrequency=${rentFrequency} | priceMin=${priceMin} | priceMax=${priceMax} | roomsMin=${roomsMin} | bathsMin=${bathsMin} | sort=${sort} | areaMax=${areaMax}`
-  );
-
   const data = await fetchApi(
-    `${baseUrl}/properties/list?locationExternalIDs=${locationExternalIDs}&purpose=${purpose}&categoryExternalID=${categoryExternalID}&rentFrequency=${rentFrequency}&priceMin=${priceMin}&priceMax=${priceMax}&roomsMin=${roomsMin}&bathsMin=${bathsMin}&sort=${sort}&areaMax=${areaMax}`
+    `${baseUrl}/properties/list?locationExternalIDs=${locationExternalIDs}&purpose=${purpose}&categoryExternalID=${categoryExternalID}&rentFrequency=${rentFrequency}&priceMin=${priceMin}&priceMax=${priceMax}&roomsMin=${roomsMin}&bathsMin=${bathsMin}&sort=${sort}&areaMin=${areaMin}`
   );
 
   return {
